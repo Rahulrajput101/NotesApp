@@ -59,7 +59,7 @@ fun NoteScreen(
             ) {
                 Text(
                     text = "Your Notes",
-                    style = MaterialTheme.typography.h2
+                    style = MaterialTheme.typography.h4
                 )
                 IconButton(
                     onClick = {
@@ -94,14 +94,14 @@ fun NoteScreen(
             ) {
                 items(state.notes) {
                     NoteItem(
-                        note = it,
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
                                   navController.navigate(
-                                      Screen.AddEditNoteScreen.route +"?noteId=${it.id}&noteColor=${it.color}"
+                                      Screen.AddEditNoteScreen.route + "?noteId=${it.id}&noteColor=${it.color}"
                                   )
                             },
+                        note = it,
                         onDeleteClick = {
                             viewModel.onEvent(NoteEvent.DeleteNote(it))
                             scope.launch {

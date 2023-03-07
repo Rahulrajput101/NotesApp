@@ -10,11 +10,13 @@ import androidx.lifecycle.viewModelScope
 import com.ondevop.notesapp.feature_note.domain.model.InvalidNoteException
 import com.ondevop.notesapp.feature_note.domain.model.Note
 import com.ondevop.notesapp.feature_note.domain.use_cases.NotesUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class AddEditNoteViewModel @Inject constructor(
     val notesUseCases: NotesUseCases,
     val savedStateHandle: SavedStateHandle
@@ -29,7 +31,7 @@ class AddEditNoteViewModel @Inject constructor(
 
     private val _noteContent = mutableStateOf(
         NoteTextFieldState(
-            "Enter content..."
+            hint="Enter content..."
         )
     )
     val noteContent: State<NoteTextFieldState> = _noteContent

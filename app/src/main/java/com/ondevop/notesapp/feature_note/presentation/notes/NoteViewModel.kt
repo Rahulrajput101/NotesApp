@@ -9,12 +9,14 @@ import com.ondevop.notesapp.feature_note.domain.use_cases.NotesUseCases
 import com.ondevop.notesapp.feature_note.domain.util.NoteOrder
 import com.ondevop.notesapp.feature_note.domain.util.OrderType
 import com.ondevop.notesapp.feature_note.domain.model.Note
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class NoteViewModel @Inject constructor(
     private val notesUseCases: NotesUseCases
 ) : ViewModel() {
@@ -65,10 +67,7 @@ class NoteViewModel @Inject constructor(
                 viewModelScope.launch {
                    notesUseCases.addNoteUsesCase(recentlyDeletedNote ?: return@launch)
                     recentlyDeletedNote = null
-
                 }
-
-
             }
 
             is NoteEvent.ToggleOrderSelection -> {
@@ -76,15 +75,7 @@ class NoteViewModel @Inject constructor(
                     isSelectionAvailable = !state.value.isSelectionAvailable
                 )
             }
-
-
-
-
-
-
         }
-
-
     }
 
 
@@ -92,10 +83,9 @@ class NoteViewModel @Inject constructor(
         getNotesJob?.cancel()
         getNotesJob = notesUseCases.getNotesUseCase(noteOrder).onEach {notes->
             _state.value = state.value.copy(
-                order =noteOrder,
-                notes =notes
+                notes =notes,
+                order =noteOrder
             )
-
         }.launchIn(viewModelScope)
 
     }

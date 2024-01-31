@@ -1,6 +1,5 @@
 package com.ondevop.notesapp.feature_note.presentation.add_edit_note
 
-import android.graphics.drawable.Animatable
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ondevop.notesapp.feature_note.domain.model.Note
 import com.ondevop.notesapp.feature_note.presentation.add_edit_note.components.TransparentHintTextField
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
@@ -53,11 +50,11 @@ fun AddEditNoteScreen(
         viewModel.eventFlow.collectLatest{ event ->
            when(event){
 
-               is AddEditNoteViewModel.UiEvent.saveNote -> {
+               is AddEditNoteViewModel.NoteUiEvent.saveNote -> {
                   navController.navigateUp()
                }
 
-               is AddEditNoteViewModel.UiEvent.ShowSnackbar -> {
+               is AddEditNoteViewModel.NoteUiEvent.ShowSnackbar -> {
                    scaffoldState.snackbarHostState.showSnackbar(
                        message = event.message
                    )

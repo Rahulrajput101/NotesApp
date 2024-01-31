@@ -14,10 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.common.io.Files.append
 import com.ondevop.notesapp.feature_note.presentation.notes.components.NoteItem
 import com.ondevop.notesapp.feature_note.presentation.notes.components.OrderSection
 import com.ondevop.notesapp.feature_note.presentation.util.Screen
@@ -26,7 +31,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun NoteScreen(
     navController: NavController,
-    viewModel: NoteViewModel = hiltViewModel()
+    viewModel: NoteViewModel = hiltViewModel(),
+    name : String =""
 ) {
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
@@ -58,7 +64,17 @@ fun NoteScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Your Notes",
+                    text = AnnotatedString.Builder().apply {
+                        append("Your Notes ")
+                        pushStyle(
+                            SpanStyle(
+                                fontSize = 24.sp, // Change the font size as needed
+                                color = Color.Red // Change the color as needed
+                            )
+                        )
+                        append(name)
+                        pop()
+                    }.toAnnotatedString(),
                     style = MaterialTheme.typography.h4
                 )
                 IconButton(

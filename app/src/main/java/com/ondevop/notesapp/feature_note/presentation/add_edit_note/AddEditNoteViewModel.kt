@@ -1,6 +1,5 @@
 package com.ondevop.notesapp.feature_note.presentation.add_edit_note
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
@@ -42,7 +41,7 @@ class AddEditNoteViewModel @Inject constructor(
     private var currentNoteId: Int? = null
 
 
-    private val _eventFlow = Channel<UiEvent>()
+    private val _eventFlow = Channel<NoteUiEvent>()
     val eventFlow = _eventFlow.receiveAsFlow()
 
     init {
@@ -112,11 +111,11 @@ class AddEditNoteViewModel @Inject constructor(
 
                             )
                         )
-                        _eventFlow.send(UiEvent.saveNote)
+                        _eventFlow.send(NoteUiEvent.saveNote)
 
                     } catch (e: InvalidNoteException) {
                         _eventFlow.send(
-                            UiEvent.ShowSnackbar(
+                            NoteUiEvent.ShowSnackbar(
                                 message = e.message ?: "Couldn't save message"
                             )
                         )
@@ -133,9 +132,9 @@ class AddEditNoteViewModel @Inject constructor(
     }
 
 
-    sealed class UiEvent {
-        data class ShowSnackbar(val message: String) : UiEvent()
-        object saveNote : UiEvent()
+    sealed class NoteUiEvent {
+        data class ShowSnackbar(val message: String) : NoteUiEvent()
+        object saveNote : NoteUiEvent()
     }
 
 

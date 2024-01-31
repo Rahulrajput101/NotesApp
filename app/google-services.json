@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "63511061613",
+    "firebase_url": "https://chitchatt-ccca3-default-rtdb.firebaseio.com",
+    "project_id": "chitchatt-ccca3",
+    "storage_bucket": "chitchatt-ccca3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63511061613:android:0b926cc629702eff498b64",
+        "android_client_info": {
+          "package_name": "com.example.android.chit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63511061613-hs4tcrjs8fjt7uscb10jcb4ornl61om2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZcQVDAKjcMwEsP0BsnmCwkouJz1rhqJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63511061613-hs4tcrjs8fjt7uscb10jcb4ornl61om2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63511061613:android:c15773497c116a0d498b64",
+        "android_client_info": {
+          "package_name": "com.ondevop.firebasepush"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63511061613-hs4tcrjs8fjt7uscb10jcb4ornl61om2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZcQVDAKjcMwEsP0BsnmCwkouJz1rhqJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63511061613-hs4tcrjs8fjt7uscb10jcb4ornl61om2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63511061613:android:aad7a521fb7d6fc9498b64",
+        "android_client_info": {
+          "package_name": "com.ondevop.notesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63511061613-hs4tcrjs8fjt7uscb10jcb4ornl61om2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZcQVDAKjcMwEsP0BsnmCwkouJz1rhqJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63511061613-hs4tcrjs8fjt7uscb10jcb4ornl61om2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,5 +5,7 @@ data class NotesUseCases(
     val deleteNoteUseCase: DeleteNoteUseCase,
     val addNoteUsesCase : AddNoteUseCase,
     val getNoteUseCase: GetNoteUseCase,
-    val signInWithGoogle: SignInWithGoogle
+    val signInWithGoogle: SignInWithGoogle,
+
+    val saveUserToFirebase: SaveUserToFirebase
 )

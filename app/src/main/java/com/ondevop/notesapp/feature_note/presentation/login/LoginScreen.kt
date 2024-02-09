@@ -66,10 +66,11 @@ fun LoginScreen(
                         UserData(
                             userName = account.displayName,
                             profilePictureUrl = account.photoUrl.toString(),
+                            email = account.email
                         )
                     }
                     account.idToken?.let { idToken ->
-                        viewModel.onEvent(LogInEvent.SignInWithGoogle(idToken))
+                        viewModel.onEvent(LogInEvent.SignInWithGoogle(idToken, userData!!))
                     }
 
                 } else {

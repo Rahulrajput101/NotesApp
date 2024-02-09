@@ -1,8 +1,11 @@
 package com.ondevop.notesapp.feature_note.presentation.login
 
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.auth.User
 import com.ondevop.core_domain.prefernces.Preferences
+import com.ondevop.notesapp.feature_note.domain.model.UserInfo
 import com.ondevop.notesapp.feature_note.domain.use_cases.NotesUseCases
 import com.ondevop.notesapp.feature_note.presentation.add_edit_note.AddEditNoteViewModel
 import com.ondevop.notesapp.feature_note.presentation.util.UiEvent
@@ -52,6 +55,11 @@ class LoginViewModel @Inject constructor(
                         val profileUri = it.profileUri.toString()
                         preferences.saveProfileUri(profileUri)
                         _state.value = _state.value.copy(isLoading = false)
+                         saveUser(UserInfo(
+                             userName = event.userData.userName ?: "" ,
+                             profileUri = event.userData.profilePictureUrl?.toUri(),
+                             email = event.userData.email ?: ""
+                         ))
                         _uiEvent.send(UiEvent.Success)
                     }.onFailure {
                         _state.value = _state.value.copy(isLoading = false)
@@ -61,5 +69,9 @@ class LoginViewModel @Inject constructor(
             }
             else ->{ }
         }
+    }
+
+    private fun saveUser(userInfo: UserInfo) = viewModelScope.launch {
+        notesUseCases.saveUserToFirebase(userInfo)
     }
 }

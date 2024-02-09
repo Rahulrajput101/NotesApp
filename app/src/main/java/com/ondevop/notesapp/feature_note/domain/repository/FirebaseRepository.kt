@@ -1,0 +1,8 @@
+package com.ondevop.notesapp.feature_note.domain.repository
+
+import com.ondevop.notesapp.feature_note.domain.model.UserInfo
+
+interface FirebaseRepository  {
+
+    fun saveUser( userInfo: UserInfo)
+}

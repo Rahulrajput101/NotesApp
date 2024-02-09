@@ -43,7 +43,8 @@ class NoteRepositoryImp (
                 Result.success(
                      UserInfo(
                         userName = user.displayName ?: "",
-                        profileUri = user.photoUrl
+                        profileUri = user.photoUrl,
+                         email = user.email ?: ""
                     )
                 )
             } else {

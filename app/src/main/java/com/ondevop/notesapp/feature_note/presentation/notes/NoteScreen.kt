@@ -68,14 +68,14 @@ fun NoteScreen(
                         append("Your Notes ")
                         pushStyle(
                             SpanStyle(
-                                fontSize = 24.sp, // Change the font size as needed
-                                color = Color.Red // Change the color as needed
+                                fontSize = 14.sp, // Change the font size as needed
+                                color = Color.Magenta // Change the color as needed
                             )
                         )
                         append(name)
                         pop()
                     }.toAnnotatedString(),
-                    style = MaterialTheme.typography.h4
+                    style = MaterialTheme.typography.body1
                 )
                 IconButton(
                     onClick = {

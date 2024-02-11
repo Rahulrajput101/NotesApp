@@ -2,13 +2,11 @@ package com.ondevop.notesapp.di
 
 import android.app.Application
 import android.content.Context
-import android.provider.ContactsContract.CommonDataKinds.Note
 import androidx.room.Room
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -16,8 +14,10 @@ import com.ondevop.core_data.prefrences.DefaultPreferences
 import com.ondevop.core_data.prefrences.dataStore
 import com.ondevop.core_domain.prefernces.Preferences
 import com.ondevop.notesapp.feature_note.data.data_source.NoteDatabase
+import com.ondevop.notesapp.feature_note.data.repository.FirebaseNoteRepositoryImp
 import com.ondevop.notesapp.feature_note.data.repository.FirebaseRepositoryImp
 import com.ondevop.notesapp.feature_note.data.repository.NoteRepositoryImp
+import com.ondevop.notesapp.feature_note.domain.repository.FirebaseNoteRepository
 import com.ondevop.notesapp.feature_note.domain.repository.FirebaseRepository
 import com.ondevop.notesapp.feature_note.domain.repository.NoteRepository
 import com.ondevop.notesapp.feature_note.domain.use_cases.*
@@ -37,16 +37,16 @@ object AppModule {
     @Provides
     @Singleton
     fun noteDatabase(
-        @ApplicationContext app : Context
+        @ApplicationContext app: Context
     ) = Room.databaseBuilder(
         app,
         NoteDatabase::class.java,
-         NoteDatabase.NOTEDATABASE_NAME
+        NoteDatabase.NOTEDATABASE_NAME
     ).build()
 
     @Singleton
     @Provides
-    fun provideFirebaseAuth() : FirebaseAuth {
+    fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }
 
@@ -56,24 +56,40 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNoteRepository(db : NoteDatabase, firebaseAuth: FirebaseAuth) : NoteRepository{
+    fun provideNoteRepository(db: NoteDatabase, firebaseAuth: FirebaseAuth): NoteRepository {
         return NoteRepositoryImp(db.noteDao, firebaseAuth)
     }
 
     @Provides
     @Singleton
-    fun provideFirebaseRepository(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore) : FirebaseRepository {
-        return FirebaseRepositoryImp(firebaseFirestore,firebaseAuth)
+    fun provideFirebaseRepository(
+        firebaseAuth: FirebaseAuth,
+        firebaseFirestore: FirebaseFirestore
+    ): FirebaseRepository {
+        return FirebaseRepositoryImp(firebaseFirestore, firebaseAuth)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseNoteRepository(
+        firebaseAuth: FirebaseAuth,
+        firebaseFirestore: FirebaseFirestore
+    ): FirebaseNoteRepository {
+        return FirebaseNoteRepositoryImp(firebaseFirestore, firebaseAuth)
     }
 
 
     @Provides
     @Singleton
-    fun provideNoteUseCase(repository: NoteRepository, firebaseRepository: FirebaseRepository) : NotesUseCases{
+    fun provideNoteUseCase(
+        repository: NoteRepository,
+        firebaseRepository: FirebaseRepository,
+        firebaseNoteRepository: FirebaseNoteRepository
+    ): NotesUseCases {
         return NotesUseCases(
             getNotesUseCase = GetNotesUseCase(repository),
             deleteNoteUseCase = DeleteNoteUseCase(repository),
-            addNoteUsesCase = AddNoteUseCase(repository),
+            addNoteUsesCase = AddNoteUseCase(repository,firebaseNoteRepository),
             getNoteUseCase = GetNoteUseCase(repository),
             signInWithGoogle = SignInWithGoogle(repository),
 
@@ -88,17 +104,19 @@ object AppModule {
     ): Preferences {
         return DefaultPreferences(app.dataStore)
     }
+
     @Provides
     @Named("webClientId")
     fun provideWebClientId(): String {
         return "63511061613-tgfp26ci5f4tqnlgd8ljiftfns8hlp6k.apps.googleusercontent.com"
     }
+
     @Singleton
     @Provides
     fun provideGoogleSignClient(
         app: Application,
         @Named("webClientId") webClientId: String
-    ) : GoogleSignInClient {
+    ): GoogleSignInClient {
         return GoogleSignIn.getClient(
             app,
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

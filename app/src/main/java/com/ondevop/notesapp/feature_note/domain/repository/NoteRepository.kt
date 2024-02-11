@@ -9,7 +9,7 @@ interface NoteRepository {
 
     fun getNotes() : Flow<List<Note>>
 
-    suspend fun getNotesById(id : Int) : Note?
+    suspend fun getNotesById(id : String) : Note?
 
     suspend fun insertNote(note: Note)
 

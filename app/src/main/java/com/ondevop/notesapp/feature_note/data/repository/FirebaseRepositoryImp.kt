@@ -34,6 +34,16 @@ class FirebaseRepositoryImp(
 
     }
 
+    fun saveNote(text : String){
+        val firebaseUserId = firebaseAuth.currentUser?.uid ?: return
+
+        try {
+
+        }catch ( e: Exception){
+            e.printStackTrace()
+        }
+    }
+
 //    override suspend fun getUser(): UserInfo? {
 //        val firebaseUserId = firebaseAuth.currentUser?.uid ?: return null
 //
@@ -65,6 +75,23 @@ class FirebaseRepositoryImp(
 
     }
 
+    override suspend fun getAllTheUsers(): List<UserInfo> {
+        val usersCollection = firestore.collection("users")
+        val userList = mutableListOf<UserInfo>()
+
+        usersCollection.get().await().forEach { document ->
+            val userData = document.data
+            val userInfo = UserInfo(
+                userName = userData["name"] as? String ?: "",
+                email = userData["email"] as? String ?: "",
+                profileUri = null
+            )
+            userList.add(userInfo)
+        }
+
+        return userList
+    }
+
 //    override suspend fun getAllTheUsers(): List<UserInfo> {
 //        val userCollection = firestore.collection("users")
 //        return try {
@@ -83,20 +110,6 @@ class FirebaseRepositoryImp(
 //        }
 //    }
 
-    suspend fun getAllUsers(): List<UserInfo> {
-        val usersCollection = firestore.collection("users")
-        val userList = mutableListOf<UserInfo>()
 
-        usersCollection.get().await().forEach { document ->
-            val userData = document.data
-            val userInfo = UserInfo(
-                userName = userData["name"] as? String ?: "",
-                email = userData["email"] as? String ?: "",
-                profileUri = null
-            )
-            userList.add(userInfo)
-        }
 
-        return userList
-    }
 }

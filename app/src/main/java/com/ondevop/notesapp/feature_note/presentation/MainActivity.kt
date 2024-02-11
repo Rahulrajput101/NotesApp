@@ -91,8 +91,8 @@ class MainActivity : ComponentActivity() {
                                         navArgument(
                                             name = "noteId"
                                         ) {
-                                            type = NavType.IntType
-                                            defaultValue = -1
+                                            type = NavType.StringType
+                                            defaultValue = ""
                                         },
 
                                         navArgument(

@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,15 +39,15 @@ class AddEditNoteViewModel @Inject constructor(
     private val _noteColor = mutableStateOf<Int>(Note.noteColors.random().toArgb())
     val noteColor: State<Int> = _noteColor
 
-    private var currentNoteId: Int? = null
+    private var currentNoteId: String = Date().time.toString()
 
 
     private val _eventFlow = Channel<NoteUiEvent>()
     val eventFlow = _eventFlow.receiveAsFlow()
 
     init {
-        savedStateHandle.get<Int>("noteId")?.let { noteId ->
-            if (noteId != -1) {
+        savedStateHandle.get<String>("noteId")?.let { noteId ->
+            if (noteId.isNotEmpty()) {
                 viewModelScope.launch {
                     notesUseCases.getNoteUseCase(noteId)?.also { note ->
                         currentNoteId = note.id
@@ -59,15 +60,9 @@ class AddEditNoteViewModel @Inject constructor(
                             isHintVisible = false
                         )
                         _noteColor.value = note.color
-
-
                     }
                 }
-
-
             }
-
-
         }
     }
 

@@ -2,10 +2,12 @@ package com.ondevop.notesapp.feature_note.domain.use_cases
 
 import com.ondevop.notesapp.feature_note.domain.model.InvalidNoteException
 import com.ondevop.notesapp.feature_note.domain.model.Note
+import com.ondevop.notesapp.feature_note.domain.repository.FirebaseNoteRepository
 import com.ondevop.notesapp.feature_note.domain.repository.NoteRepository
 
 class AddNoteUseCase(
-    private val repository: NoteRepository
+    private val repository: NoteRepository,
+    private val firebaseNoteRepository: FirebaseNoteRepository
 ) {
 
 
@@ -18,7 +20,8 @@ class AddNoteUseCase(
         if(note.content.isBlank()){
             throw InvalidNoteException("The content of the note can't be empty.")
         }
-        repository.insertNote(note)
+        val id =  repository.insertNote(note)
+        firebaseNoteRepository.addNotes(note)
 
     }
 }

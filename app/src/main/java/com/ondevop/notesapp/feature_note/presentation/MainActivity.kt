@@ -111,7 +111,6 @@ class MainActivity : ComponentActivity() {
                                         noteColor = color
                                     )
                                 }
-
                             }
 
                         }

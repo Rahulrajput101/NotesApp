@@ -88,7 +88,7 @@ object AppModule {
     ): NotesUseCases {
         return NotesUseCases(
             getNotesUseCase = GetNotesUseCase(repository),
-            deleteNoteUseCase = DeleteNoteUseCase(repository),
+            deleteNoteUseCase = DeleteNoteUseCase(repository,firebaseNoteRepository),
             addNoteUsesCase = AddNoteUseCase(repository,firebaseNoteRepository),
             getNoteUseCase = GetNoteUseCase(repository),
             signInWithGoogle = SignInWithGoogle(repository),

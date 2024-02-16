@@ -10,6 +10,7 @@ import com.ondevop.notesapp.feature_note.domain.model.InvalidNoteException
 import com.ondevop.notesapp.feature_note.domain.model.Note
 import com.ondevop.notesapp.feature_note.domain.use_cases.NotesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ class AddEditNoteViewModel @Inject constructor(
 
     private val _noteContent = mutableStateOf(
         NoteTextFieldState(
-            hint="Enter content..."
+            hint = "Enter content..."
         )
     )
     val noteContent: State<NoteTextFieldState> = _noteContent
@@ -96,17 +97,20 @@ class AddEditNoteViewModel @Inject constructor(
             is AddNoteUiEvent.SaveNote -> {
                 viewModelScope.launch() {
                     try {
-                        notesUseCases.addNoteUsesCase(
-                            Note(
-                                title = noteTitle.value.text,
-                                content = noteContent.value.text,
-                                timeStamp = System.currentTimeMillis(),
-                                color = noteColor.value,
-                                id = currentNoteId
+                      val note =  Note(
+                          title = noteTitle.value.text,
+                          content = noteContent.value.text,
+                          timeStamp = System.currentTimeMillis(),
+                          color = noteColor.value,
+                          id = currentNoteId
 
-                            )
-                        )
+                      )
+                        notesUseCases.addNoteUsesCase(note)
+
+                        async {  notesUseCases.addNoteToFirebase(note)}
+
                         _eventFlow.send(NoteUiEvent.saveNote)
+
 
                     } catch (e: InvalidNoteException) {
                         _eventFlow.send(
@@ -116,14 +120,8 @@ class AddEditNoteViewModel @Inject constructor(
                         )
                     }
                 }
-
-
             }
-
-
         }
-
-
     }
 
 

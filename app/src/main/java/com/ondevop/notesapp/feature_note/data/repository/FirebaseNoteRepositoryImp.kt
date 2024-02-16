@@ -65,7 +65,6 @@ class FirebaseNoteRepositoryImp(
 
 
     override suspend fun addNotes(message: Note) {
-        Log.d("Tag", " message id  ${message.id}")
         if (message.id.isNotEmpty()) {
             firestore.collection("users")
                 .document(firebaseAuth.currentUser?.uid!!)

@@ -93,7 +93,9 @@ object AppModule {
             getNoteUseCase = GetNoteUseCase(repository, firebaseNoteRepository),
             signInWithGoogle = SignInWithGoogle(repository),
 
-            saveUserToFirebase = SaveUserToFirebase(firebaseRepository)
+            saveUserToFirebase = SaveUserToFirebase(firebaseRepository),
+            registerNotesRealTimeUpdates = RegisterNotesRealTimeUpdates(firebaseNoteRepository),
+            unregisterNotesRealTimeUpdates = UnregisterNotesRealTimeUpdates(firebaseNoteRepository)
         )
     }
 

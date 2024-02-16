@@ -11,7 +11,7 @@ class DeleteNoteUseCase(
 ) {
     suspend operator fun invoke(note: Note)  {
           firebaseNoteRepository.deleteNotes(note.id)
-          repository.DeleteNote(note)
+         // repository.DeleteNote(note)
     }
 
 

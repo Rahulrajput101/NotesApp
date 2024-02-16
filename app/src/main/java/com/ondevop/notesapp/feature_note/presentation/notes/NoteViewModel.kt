@@ -33,6 +33,7 @@ class NoteViewModel @Inject constructor(
 
     init{
         viewModelScope.launch {
+            notesUseCases.registerNotesRealTimeUpdates()
             getNotes(NoteOrder.Date(OrderType.Descending))
         }
        
@@ -94,6 +95,11 @@ class NoteViewModel @Inject constructor(
             )
         }.launchIn(viewModelScope)
 
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        notesUseCases.unregisterNotesRealTimeUpdates()
     }
 
 

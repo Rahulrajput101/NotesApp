@@ -10,7 +10,8 @@ class GetNoteUseCase (
         ) {
 
     suspend  operator fun invoke(id : String): Note?{
-       return repository.getNotesById(id)
+        return firebaseNoteRepository.getNotesById(id)
+//       return repository.getNotesById(id)
 
     }
 }

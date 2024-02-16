@@ -20,7 +20,7 @@ class AddNoteUseCase(
         if(note.content.isBlank()){
             throw InvalidNoteException("The content of the note can't be empty.")
         }
-        val id =  repository.insertNote(note)
+        //val id =  repository.insertNote(note)
         firebaseNoteRepository.addNotes(note)
 
     }

@@ -2,9 +2,11 @@ package com.ondevop.notesapp.feature_note.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.errorprone.annotations.Keep
 import com.ondevop.notesapp.ui.theme.*
 import java.util.Date
 
+@Keep
 @Entity(
     tableName ="note"
 )

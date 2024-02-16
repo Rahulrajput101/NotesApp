@@ -87,10 +87,10 @@ object AppModule {
         firebaseNoteRepository: FirebaseNoteRepository
     ): NotesUseCases {
         return NotesUseCases(
-            getNotesUseCase = GetNotesUseCase(repository),
+            getNotesUseCase = GetNotesUseCase(repository,firebaseNoteRepository),
             deleteNoteUseCase = DeleteNoteUseCase(repository,firebaseNoteRepository),
             addNoteUsesCase = AddNoteUseCase(repository,firebaseNoteRepository),
-            getNoteUseCase = GetNoteUseCase(repository),
+            getNoteUseCase = GetNoteUseCase(repository, firebaseNoteRepository),
             signInWithGoogle = SignInWithGoogle(repository),
 
             saveUserToFirebase = SaveUserToFirebase(firebaseRepository)

@@ -1,7 +1,9 @@
 package com.ondevop.notesapp.feature_note.domain.use_cases
 
+import android.util.Log
 import androidx.compose.ui.text.toLowerCase
 import com.ondevop.notesapp.feature_note.domain.model.Note
+import com.ondevop.notesapp.feature_note.domain.repository.FirebaseNoteRepository
 import com.ondevop.notesapp.feature_note.domain.repository.NoteRepository
 import com.ondevop.notesapp.feature_note.domain.util.NoteOrder
 import com.ondevop.notesapp.feature_note.domain.util.OrderType
@@ -10,13 +12,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class GetNotesUseCase(
-    private val repository: NoteRepository
+    private val repository: NoteRepository,
+    private val firebaseNoteRepository: FirebaseNoteRepository
 ) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         noteOrder: NoteOrder = NoteOrder.Date(OrderType.Descending)
     ) : Flow<List<Note>> {
-
+        Log.d("Get","notes: ${firebaseNoteRepository.getNotes()}")
         val sortedNote = repository.getNotes().map {notes->
 
          when(noteOrder.orderType){
@@ -42,8 +45,6 @@ class GetNotesUseCase(
 
 
              }
-
-
 
          }
 

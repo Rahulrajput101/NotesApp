@@ -10,11 +10,8 @@ class DeleteNoteUseCase(
     private val firebaseNoteRepository: FirebaseNoteRepository
 ) {
     suspend operator fun invoke(note: Note)  {
-
           firebaseNoteRepository.deleteNotes(note.id)
           repository.DeleteNote(note)
-
-
     }
 
 

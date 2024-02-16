@@ -32,7 +32,10 @@ class NoteViewModel @Inject constructor(
 
 
     init{
-        getNotes(NoteOrder.Date(OrderType.Descending))
+        viewModelScope.launch {
+            getNotes(NoteOrder.Date(OrderType.Descending))
+        }
+       
     }
 
     fun onEvent( noteEvent: NoteEvent){
@@ -47,7 +50,10 @@ class NoteViewModel @Inject constructor(
 
                 }
 
-                getNotes(noteEvent.noteOrder)
+                viewModelScope.launch {
+                    getNotes(noteEvent.noteOrder)
+                }
+
 
 
 
@@ -79,7 +85,7 @@ class NoteViewModel @Inject constructor(
     }
 
 
-    private fun getNotes(noteOrder: NoteOrder){
+    private suspend fun getNotes(noteOrder: NoteOrder){
         getNotesJob?.cancel()
         getNotesJob = notesUseCases.getNotesUseCase(noteOrder).onEach {notes->
             _state.value = state.value.copy(

@@ -12,7 +12,10 @@ import com.ondevop.notesapp.feature_note.domain.use_cases.NotesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
@@ -42,6 +45,8 @@ class AddEditNoteViewModel @Inject constructor(
 
     private var currentNoteId: String = Date().time.toString()
 
+    private val _imageUri = MutableStateFlow("")
+    val imageUri= _imageUri.asStateFlow()
 
     private val _eventFlow = Channel<NoteUiEvent>()
     val eventFlow = _eventFlow.receiveAsFlow()
@@ -97,7 +102,8 @@ class AddEditNoteViewModel @Inject constructor(
             is AddNoteUiEvent.SaveNote -> {
                 viewModelScope.launch() {
                     try {
-                      val note =  Note(
+                      val note =
+                          Note(
                           title = noteTitle.value.text,
                           content = noteContent.value.text,
                           timeStamp = System.currentTimeMillis(),
@@ -119,6 +125,12 @@ class AddEditNoteViewModel @Inject constructor(
                             )
                         )
                     }
+                }
+            }
+
+            is AddNoteUiEvent.UpdateProfileUir -> {
+                _imageUri.update {
+                    event.profileUri
                 }
             }
         }

@@ -1,5 +1,9 @@
 package com.ondevop.notesapp.feature_note.presentation.add_edit_note
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -12,8 +16,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -25,6 +32,7 @@ import com.ondevop.notesapp.feature_note.domain.model.Note
 import com.ondevop.notesapp.feature_note.presentation.add_edit_note.components.TransparentHintTextField
 import kotlinx.coroutines.flow.collectLatest
 import androidx.navigation.NavController
+import com.ondevop.notesapp.feature_note.presentation.CircularImage
 import kotlinx.coroutines.launch
 
 @Composable
@@ -43,6 +51,10 @@ fun AddEditNoteScreen(
             Color(if (noteColor != -1) noteColor else viewModel.noteColor.value)
         )
     }
+    var selectImageUir by remember{
+        mutableStateOf<Uri?>(null)
+    }
+
 
     val scope = rememberCoroutineScope()
 
@@ -62,6 +74,13 @@ fun AddEditNoteScreen(
            }
         }
     }
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {uri ->
+            selectImageUir = uri
+        }
+    )
 
 
     Scaffold(
@@ -112,7 +131,8 @@ fun AddEditNoteScreen(
                                 scope.launch {
                                     noteBackgroundAnimatable.animateTo(
                                         targetValue = Color(colorInt),
-                                        animationSpec = tween(durationMillis = 500
+                                        animationSpec = tween(
+                                            durationMillis = 500
                                         )
                                     )
                                 }
@@ -120,6 +140,24 @@ fun AddEditNoteScreen(
                             }
                     )
                 }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                CircularImage(
+                    imageUri = selectImageUir,
+                    onClick = {
+                        singlePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(
+                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                            )
+                        )
+                    }
+                )
             }
             
              Spacer(modifier = Modifier.height(16.dp))
@@ -153,10 +191,7 @@ fun AddEditNoteScreen(
                 isHintVisible = contentState.isHintVisible,
                 textStyle = MaterialTheme.typography.body1,
                 modifier = Modifier.fillMaxHeight()
-
             )
-            
-
 
         }
 

@@ -9,6 +9,6 @@ sealed class AddNoteUiEvent {
     data class EnteredContent(val value : String) : AddNoteUiEvent()
     data class ChangeContentFocus(val focusState : FocusState) : AddNoteUiEvent()
     data class ChangeColor(val color : Int) : AddNoteUiEvent()
-
+    data class UpdateProfileUir(val profileUri: String) :AddNoteUiEvent()
     object SaveNote : AddNoteUiEvent()
 }

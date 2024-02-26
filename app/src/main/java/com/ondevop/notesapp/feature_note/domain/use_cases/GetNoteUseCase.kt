@@ -9,7 +9,7 @@ class GetNoteUseCase (
     private val firebaseNoteRepository: FirebaseNoteRepository
         ) {
 
-    suspend  operator fun invoke(id : String): Note?{
+    suspend  operator fun invoke(id : String): Pair<Note?,String?>{
         return firebaseNoteRepository.getNotesById(id)
 //       return repository.getNotesById(id)
 

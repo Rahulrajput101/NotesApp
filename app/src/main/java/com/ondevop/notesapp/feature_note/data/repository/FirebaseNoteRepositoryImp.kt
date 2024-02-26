@@ -115,8 +115,8 @@ class FirebaseNoteRepositoryImp(
 //            .await()
     }
 
-    override suspend fun getNotesById(noteId: String): Note?{
-        val userId = firebaseAuth.currentUser?.uid ?: return null
+    override suspend fun getNotesById(noteId: String): Pair<Note?,String?>{
+        val userId = firebaseAuth.currentUser?.uid ?: return Pair(null,null)
          try {
             val querySnapshot = firestore.collection("users")
                 .document(userId)
@@ -129,21 +129,23 @@ class FirebaseNoteRepositoryImp(
 
             if (documents.isNotEmpty()) {
                 val document = documents[0]
-                val id = document.getString("id") ?: return null
+                val id = document.getString("id") ?: return Pair(null,null)
                 val title = document.getString("title") ?: ""
                 val content = document.getString("content") ?: ""
                 val timeStamp = document.getLong("timeStamp") ?: 0L
                 val color = document.getLong("color")?.toInt() ?: 1
                 val imageId = document.getString("imageId") ?: ""
 
-               return Note(id, title, content, timeStamp, color,imageId)
+                val imageUri = firebaseStorage.child(IMAGE_PATH + imageId + IMAGE_EXT).downloadUrl.await()
+
+               return Pair(Note(id, title, content, timeStamp, color,imageId),imageUri.toString())
             } else {
-                 return null // Note with the given ID does not exist
+                 return Pair(null,null) // Note with the given ID does not exist
             }
         } catch (e: Exception) {
             // Handle any exceptions, such as Firestore errors or network issues
             Log.e(TAG, "Error getting note by ID", e)
-           return null
+           return Pair(null,null)
         }
     }
 

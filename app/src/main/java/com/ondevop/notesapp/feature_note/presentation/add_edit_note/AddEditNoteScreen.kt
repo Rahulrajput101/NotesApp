@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +28,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ondevop.notesapp.feature_note.domain.model.Note
 import com.ondevop.notesapp.feature_note.presentation.add_edit_note.components.TransparentHintTextField
@@ -45,16 +47,13 @@ fun AddEditNoteScreen(
     val titleState = viewModel.noteTitle.value
     val contentState = viewModel.noteContent.value
     val scaffoldState = rememberScaffoldState()
+    val imageUri by viewModel.imageUri.collectAsState()
 
     val noteBackgroundAnimatable = remember {
         Animatable(
             Color(if (noteColor != -1) noteColor else viewModel.noteColor.value)
         )
     }
-    var selectImageUir by remember{
-        mutableStateOf<Uri?>(null)
-    }
-
 
     val scope = rememberCoroutineScope()
 
@@ -78,7 +77,6 @@ fun AddEditNoteScreen(
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {uri ->
-            selectImageUir = uri
             viewModel.onEvent(AddNoteUiEvent.UpdateProfileUir(uri.toString()))
         }
     )
@@ -149,16 +147,18 @@ fun AddEditNoteScreen(
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                CircularImage(
-                    imageUri = selectImageUir,
-                    onClick = {
-                        singlePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                if (imageUri.isNotEmpty()){
+                    CircularImage(
+                        imageUri = imageUri.toUri(),
+                        onClick = {
+                            singlePhotoPickerLauncher.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
                             )
-                        )
-                    }
-                )
+                        }
+                    )
+                }
             }
             
              Spacer(modifier = Modifier.height(16.dp))

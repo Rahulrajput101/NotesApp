@@ -10,7 +10,7 @@ interface FirebaseNoteRepository {
     suspend fun addNotes(message: Note, image: String?)
     suspend fun deleteNotes(noteId: String)
 
-    suspend fun getNotesById(noteId: String): Note?
+    suspend fun getNotesById(noteId: String): Pair<Note?,String?>
 
     suspend fun realtimeNotesData()
 

@@ -1,5 +1,6 @@
 package com.ondevop.notesapp.feature_note.presentation.add_edit_note
 
+import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
@@ -55,17 +56,22 @@ class AddEditNoteViewModel @Inject constructor(
         savedStateHandle.get<String>("noteId")?.let { noteId ->
             if (noteId.isNotEmpty()) {
                 viewModelScope.launch {
-                    notesUseCases.getNoteUseCase(noteId)?.also { note ->
-                        currentNoteId = note.id
-                        _noteTitle.value = noteTitle.value.copy(
-                            text = note.title,
-                            isHintVisible = false
-                        )
-                        _noteContent.value = noteContent.value.copy(
-                            text = note.content,
-                            isHintVisible = false
-                        )
-                        _noteColor.value = note.color
+                    notesUseCases.getNoteUseCase(noteId).also { (note,image) ->
+                        note?.let {
+                            currentNoteId = note.id
+                            _noteTitle.value = noteTitle.value.copy(
+                                text = note.title,
+                                isHintVisible = false
+                            )
+                            _noteContent.value = noteContent.value.copy(
+                                text = note.content,
+                                isHintVisible = false
+                            )
+                            _noteColor.value = note.color
+                        }
+                       image?.let {
+                           _imageUri.value = image
+                       }
                     }
                 }
             }

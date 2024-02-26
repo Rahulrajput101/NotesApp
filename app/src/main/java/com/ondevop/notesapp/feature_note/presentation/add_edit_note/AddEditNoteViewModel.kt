@@ -46,7 +46,7 @@ class AddEditNoteViewModel @Inject constructor(
     private var currentNoteId: String = Date().time.toString()
 
     private val _imageUri = MutableStateFlow("")
-    val imageUri= _imageUri.asStateFlow()
+    val imageUri = _imageUri.asStateFlow()
 
     private val _eventFlow = Channel<NoteUiEvent>()
     val eventFlow = _eventFlow.receiveAsFlow()
@@ -102,18 +102,16 @@ class AddEditNoteViewModel @Inject constructor(
             is AddNoteUiEvent.SaveNote -> {
                 viewModelScope.launch() {
                     try {
-                      val note =
-                          Note(
-                          title = noteTitle.value.text,
-                          content = noteContent.value.text,
-                          timeStamp = System.currentTimeMillis(),
-                          color = noteColor.value,
-                          id = currentNoteId
+                        val note = Note(
+                                title = noteTitle.value.text,
+                                content = noteContent.value.text,
+                                timeStamp = System.currentTimeMillis(),
+                                color = noteColor.value,
+                                id = currentNoteId,
+                            )
+                       // notesUseCases.addNoteUsesCase(note)
 
-                      )
-                        notesUseCases.addNoteUsesCase(note)
-
-                        async {  notesUseCases.addNoteToFirebase(note)}
+                        async { notesUseCases.addNoteToFirebase(note,imageUri.value) }
 
                         _eventFlow.send(NoteUiEvent.saveNote)
 
@@ -135,7 +133,6 @@ class AddEditNoteViewModel @Inject constructor(
             }
         }
     }
-
 
     sealed class NoteUiEvent {
         data class ShowSnackbar(val message: String) : NoteUiEvent()

@@ -10,6 +10,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import com.ondevop.core_data.prefrences.DefaultPreferences
 import com.ondevop.core_data.prefrences.dataStore
 import com.ondevop.core_domain.prefernces.Preferences
@@ -53,6 +56,9 @@ object AppModule {
     @Singleton
     @Provides
     fun firestoreInstance(): FirebaseFirestore = Firebase.firestore
+    @Singleton
+    @Provides
+    fun firestoreStroageRef(): StorageReference= Firebase.storage.reference
 
     @Provides
     @Singleton
@@ -73,9 +79,10 @@ object AppModule {
     @Singleton
     fun provideFirebaseNoteRepository(
         firebaseAuth: FirebaseAuth,
+        firebaseStorageRef: StorageReference,
         firebaseFirestore: FirebaseFirestore
     ): FirebaseNoteRepository {
-        return FirebaseNoteRepositoryImp(firebaseFirestore, firebaseAuth)
+        return FirebaseNoteRepositoryImp(firebaseFirestore, firebaseStorageRef,firebaseAuth)
     }
 
 

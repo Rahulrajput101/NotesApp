@@ -79,6 +79,7 @@ fun AddEditNoteScreen(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {uri ->
             selectImageUir = uri
+            viewModel.onEvent(AddNoteUiEvent.UpdateProfileUir(uri.toString()))
         }
     )
 

@@ -2,12 +2,13 @@ package com.ondevop.notesapp.feature_note.data.repository
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.StorageReference
 import com.ondevop.notesapp.feature_note.domain.model.Note
 import com.ondevop.notesapp.feature_note.domain.repository.FirebaseNoteRepository
 import com.ondevop.notesapp.ui.theme.LightGreen
@@ -18,6 +19,7 @@ import kotlinx.coroutines.tasks.await
 
 class FirebaseNoteRepositoryImp(
     private val firestore: FirebaseFirestore,
+    private val firebaseStorage: StorageReference,
     private val firebaseAuth: FirebaseAuth
 ) : FirebaseNoteRepository {
 
@@ -26,6 +28,12 @@ class FirebaseNoteRepositoryImp(
         get() = _notes.asStateFlow()
 
     private var notesListenerRegistration: ListenerRegistration? = null
+
+    companion object{
+        val IMAGE_PATH = "${FirebaseAuth.getInstance().currentUser?.uid}/images/"
+        const val IMAGE_EXT = ".png"
+    }
+
 
     // private val userId =
     override suspend fun getNotes(): List<Note> {
@@ -58,13 +66,14 @@ class FirebaseNoteRepositoryImp(
                     title = document.getString("title") ?: "",
                     content = document.getString("content") ?: "",
                     timeStamp = document.getLong("timeStamp") ?: 0L,
-                    color = document.getLong("color")?.toInt() ?: 1
+                    color = document.getLong("color")?.toInt() ?: 1,
+                    imageId = document.getString("imageId") ?: ""
                 )
             }.reversed()
     }
 
 
-    override suspend fun addNotes(message: Note) {
+    override suspend fun addNotes(message: Note,image : String?) {
         if (message.id.isNotEmpty()) {
             firestore.collection("users")
                 .document(firebaseAuth.currentUser?.uid!!)
@@ -72,6 +81,12 @@ class FirebaseNoteRepositoryImp(
                 .document(message.id)
                 .set(message, SetOptions.merge())
                 .await()
+
+             image?.let {
+                 firebaseStorage.child(IMAGE_PATH + message.imageId + IMAGE_EXT)
+                     .putFile(it.toUri()).await()
+             }
+
         } else {
             Log.d("Tag", " message id is null  ${message.id}")
         }
@@ -119,8 +134,9 @@ class FirebaseNoteRepositoryImp(
                 val content = document.getString("content") ?: ""
                 val timeStamp = document.getLong("timeStamp") ?: 0L
                 val color = document.getLong("color")?.toInt() ?: 1
+                val imageId = document.getString("imageId") ?: ""
 
-               return Note(id, title, content, timeStamp, color)
+               return Note(id, title, content, timeStamp, color,imageId)
             } else {
                  return null // Note with the given ID does not exist
             }
@@ -151,8 +167,8 @@ class FirebaseNoteRepositoryImp(
                 val content = document.getString("content") ?: ""
                 val timeStamp = document.getLong("timeStamp") ?: 0L
                 val color = document.getLong("color")?.toInt() ?: LightGreen.toArgb()
-
-                val note = Note(id, title, content, timeStamp, color)
+                val imageId = document.getString("imageId") ?: ""
+                val note = Note(id, title, content, timeStamp, color, imageId)
                 notes.add(note)
             }
             _notes.value = notes
@@ -161,8 +177,12 @@ class FirebaseNoteRepositoryImp(
 
     }
 
+    override suspend fun saveImage(noteId: String) {
+        TODO("Not yet implemented")
+    }
 
-   override fun stopNotesRealtimeUpdates() {
+
+    override fun stopNotesRealtimeUpdates() {
         notesListenerRegistration?.remove()
     }
 

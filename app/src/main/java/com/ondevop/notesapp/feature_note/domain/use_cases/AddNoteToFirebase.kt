@@ -6,7 +6,7 @@ import com.ondevop.notesapp.feature_note.domain.repository.FirebaseNoteRepositor
 class AddNoteToFirebase (
     private val firebaseNoteRepository: FirebaseNoteRepository
 ){
-    suspend operator fun invoke(note: Note){
-        firebaseNoteRepository.addNotes(note)
+    suspend operator fun invoke(note: Note, image: String? = null){
+        firebaseNoteRepository.addNotes(note,image)
     }
 }

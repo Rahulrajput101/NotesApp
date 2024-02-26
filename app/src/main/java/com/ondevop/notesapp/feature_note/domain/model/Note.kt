@@ -17,11 +17,25 @@ data class Note(
     val content : String,
     val timeStamp : Long,
     val color :  Int,
+    val imageId: String? = System.currentTimeMillis().toString()
 ){
     companion object{
         val noteColors = listOf(RedOrange, LightGreen, Violet, BabyBlue, RedPink)
     }
 }
 
+
+// Migration script to update existing documents in Firestore
+//val collectionRef = firestore.collection("your_collection")
+//
+//collectionRef.get().addOnSuccessListener { querySnapshot ->
+//    for (document in querySnapshot.documents) {
+//        val note = document.toObject(Note::class.java)
+//        if (note != null) {
+//            val updatedNote = note.copy(imageId = "default_image_id") // Set a default value for imageId
+//            collectionRef.document(document.id).set(updatedNote)
+//        }
+//    }
+//}
 class InvalidNoteException(message : String) : Exception(message)
 class CachingExceptionFirebase : Exception()

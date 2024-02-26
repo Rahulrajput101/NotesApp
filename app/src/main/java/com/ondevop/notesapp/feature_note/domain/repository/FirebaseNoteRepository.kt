@@ -7,12 +7,14 @@ interface FirebaseNoteRepository {
 
     val notes : StateFlow<List<Note>>
     suspend fun getNotes(): List<Note>
-    suspend fun addNotes(message: Note)
+    suspend fun addNotes(message: Note, image: String?)
     suspend fun deleteNotes(noteId: String)
 
     suspend fun getNotesById(noteId: String): Note?
 
     suspend fun realtimeNotesData()
+
+    suspend fun saveImage(noteId: String,)
 
      fun stopNotesRealtimeUpdates()
 }

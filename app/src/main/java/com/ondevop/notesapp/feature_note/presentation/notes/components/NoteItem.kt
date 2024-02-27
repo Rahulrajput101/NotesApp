@@ -30,7 +30,6 @@ import com.ondevop.notesapp.feature_note.presentation.CircularImage
 @Composable
 fun NoteItem(
     note : Note,
-    image : String?,
     modifier: Modifier =Modifier,
     cornerRadius: Dp = 10.dp,
     cutCornerSize : Dp = 30.dp,
@@ -101,21 +100,6 @@ fun NoteItem(
 
 
         }
-
-        if (image != null) {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-                    .size(40.dp),
-                contentAlignment = Alignment.CenterEnd
-            ){
-
-            }
-            CircularImage(
-                imageUri = image.toUri(),
-                onClick = {}
-            )
-        }
-
         IconButton(
             onClick =  onDeleteClick ,
             modifier = Modifier.align(Alignment.BottomEnd)

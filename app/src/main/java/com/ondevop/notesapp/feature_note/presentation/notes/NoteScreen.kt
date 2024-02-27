@@ -124,7 +124,6 @@ fun NoteScreen(
                                 )
                             },
                         note = it,
-                        image = if(images.value.isNotEmpty()) images.value[0] else "",
                         onDeleteClick = {
                             viewModel.onEvent(NoteEvent.DeleteNote(it))
                             scope.launch {

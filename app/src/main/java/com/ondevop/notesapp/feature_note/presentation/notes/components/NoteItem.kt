@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -21,12 +22,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
+import androidx.core.net.toUri
 import com.ondevop.notesapp.feature_note.domain.model.Note
+import com.ondevop.notesapp.feature_note.presentation.CircularImage
 
 
 @Composable
 fun NoteItem(
     note : Note,
+    image : String?,
     modifier: Modifier =Modifier,
     cornerRadius: Dp = 10.dp,
     cutCornerSize : Dp = 30.dp,
@@ -97,6 +101,21 @@ fun NoteItem(
 
 
         }
+
+        if (image != null) {
+            Box(
+                modifier = Modifier.fillMaxWidth()
+                    .size(40.dp),
+                contentAlignment = Alignment.CenterEnd
+            ){
+
+            }
+            CircularImage(
+                imageUri = image.toUri(),
+                onClick = {}
+            )
+        }
+
         IconButton(
             onClick =  onDeleteClick ,
             modifier = Modifier.align(Alignment.BottomEnd)

@@ -103,7 +103,8 @@ object AppModule {
             saveUserToFirebase = SaveUserToFirebase(firebaseRepository),
             addNoteToFirebase = AddNoteToFirebase(firebaseNoteRepository),
             registerNotesRealTimeUpdates = RegisterNotesRealTimeUpdates(firebaseNoteRepository),
-            unregisterNotesRealTimeUpdates = UnregisterNotesRealTimeUpdates(firebaseNoteRepository)
+            unregisterNotesRealTimeUpdates = UnregisterNotesRealTimeUpdates(firebaseNoteRepository),
+            getImages = GetImages(firebaseNoteRepository)
         )
     }
 

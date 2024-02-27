@@ -7,6 +7,7 @@ import com.ondevop.notesapp.feature_note.domain.util.OrderType
 data class NoteState (
 
     val notes : List<Note> = emptyList(),
+    val images : List<String> = emptyList(),
     val order: NoteOrder = NoteOrder.Date(OrderType.Descending),
     val isSelectionAvailable : Boolean = false
 

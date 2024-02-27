@@ -147,7 +147,7 @@ fun AddEditNoteScreen(
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                if (imageUri.isNotEmpty()){
+
                     CircularImage(
                         imageUri = imageUri.toUri(),
                         onClick = {
@@ -158,7 +158,7 @@ fun AddEditNoteScreen(
                             )
                         }
                     )
-                }
+
             }
             
              Spacer(modifier = Modifier.height(16.dp))

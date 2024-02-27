@@ -10,5 +10,7 @@ data class NotesUseCases(
     val saveUserToFirebase: SaveUserToFirebase,
     val addNoteToFirebase: AddNoteToFirebase,
     val registerNotesRealTimeUpdates: RegisterNotesRealTimeUpdates,
-    val unregisterNotesRealTimeUpdates: UnregisterNotesRealTimeUpdates
+    val unregisterNotesRealTimeUpdates: UnregisterNotesRealTimeUpdates,
+
+    val getImages: GetImages
 )

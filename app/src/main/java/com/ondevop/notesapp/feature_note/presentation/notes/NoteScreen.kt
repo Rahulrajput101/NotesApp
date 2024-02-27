@@ -1,5 +1,6 @@
 package com.ondevop.notesapp.feature_note.presentation.notes
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +37,10 @@ fun NoteScreen(
     name : String =""
 ) {
     val state = viewModel.state.value
+    val images = viewModel.images.collectAsState()
+
+    Log.d("images", " ${state.images}")
+    Log.d("satte images", " ${images.value}")
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
@@ -113,11 +119,12 @@ fun NoteScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                  navController.navigate(
-                                      Screen.AddEditNoteScreen.route + "?noteId=${it.id}&noteColor=${it.color}"
-                                  )
+                                navController.navigate(
+                                    Screen.AddEditNoteScreen.route + "?noteId=${it.id}&noteColor=${it.color}"
+                                )
                             },
                         note = it,
+                        image = if(images.value.isNotEmpty()) images.value[0] else "",
                         onDeleteClick = {
                             viewModel.onEvent(NoteEvent.DeleteNote(it))
                             scope.launch {
